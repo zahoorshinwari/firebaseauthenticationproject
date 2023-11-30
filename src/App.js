@@ -1,5 +1,14 @@
+import { Routes, Route } from "react-router-dom";
+import Home from "./components/Home";
+import About from "./components/About";
+
+import './App.css'
+
 import { useState } from "react";
 import { useFirebase } from "./context/firebase";
+import Navbar from "./components/Navbar";
+import OrderSummary from "./components/OrderSummary";
+import NoMatch from "./components/NoMatch";
 
 function App() {
   const [email, setEmail] = useState('');
@@ -15,7 +24,7 @@ function App() {
         const userId = userCredential.user.uid;
 
         // Store user data in the Realtime Database using the unique user ID as the key
-        firebase.putData(`users/${userId}`, { name, email });
+        firebase.putData(`users/${userId}`, { name, email, password });
         setName('')
         setEmail('')
         setPassword('')
@@ -38,10 +47,11 @@ function App() {
         onChange={n => setName(n.target.value)}
         value={name}
          />
+         <br />
 
          
 
-    <label>Your Email</label>
+    <label>Your Email:</label>
       <input
         type='email'
         placeholder='enter your email'
@@ -63,6 +73,16 @@ function App() {
       <br />
 
       <button onClick={handleSignUp}>Sign Up</button>
+      
+
+       <Navbar />
+    <Routes>
+      <Route path="/" element={<Home />}></Route>
+      <Route path="about" element={<About />}></Route>
+      <Route path="order-summary" element={<OrderSummary />}></Route>
+      <Route path="*" element={<NoMatch />}></Route>
+    </Routes>
+
     </div>
   );
 }

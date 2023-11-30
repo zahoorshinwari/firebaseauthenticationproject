@@ -2,6 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+// the below library is used for routes
+import { BrowserRouter } from 'react-router-dom'
+
 import { FirebaseProvider } from './context/firebase';
 import reportWebVitals from './reportWebVitals';
 
@@ -9,7 +12,10 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <FirebaseProvider>
-      <App />
+      <BrowserRouter>
+      
+        <App />
+      </BrowserRouter>
     </FirebaseProvider>
   </React.StrictMode>
 );
