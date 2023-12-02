@@ -4,6 +4,7 @@ import About from "./components/About";
 
 import './App.css'
 
+
 import { useState } from "react";
 import { useFirebase } from "./context/firebase";
 import Navbar from "./components/Navbar";
@@ -15,13 +16,19 @@ import NewProducts from "./components/NewProducts";
 import Users from "./components/Users";
 import UserDetails from "./components/UserDetails";
 import Admin from "./components/Admin";
+import { child, get, getDatabase, ref } from "firebase/database";
+
+
 
 function App() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState("");
+
   
+
   const firebase = useFirebase();
+  const dbRef = ref(getDatabase())
 
   const handleSignUp = () => {
     firebase.signupUserWithEmailAndPassword(email, password)
@@ -43,8 +50,33 @@ function App() {
       });
   };
 
+  // store data in realtime firebase database
+  const putNewData = () => {
+    firebase.putData("department/software engineering/7th semester", 
+    {id: 1,
+    name: 'ikram',
+    subject: 'flutter app development',
+    age: 23
+  })
+  }
+
+  // get the data from the real time database
+  const getData = () => get(child(dbRef, "department/software engineering")).then((snapshot) => {
+    if (snapshot.exists()) {
+      console.log(snapshot.val());
+    } else {
+      console.log("no data available");
+    }
+  }).catch((error) => console.log(error))
+  
+
+
+
+
+
   return (
     <div>
+    
       <h1>firebase authentication</h1>
 
       <label>Name:</label>
@@ -79,7 +111,11 @@ function App() {
       <br />
 
       <button onClick={handleSignUp}>Sign Up</button>
+      <button onClick={putNewData}>Put Data</button>
+      <button onClick={getData}>get Data</button>
       
+
+
 
        <Navbar />
     <Routes>

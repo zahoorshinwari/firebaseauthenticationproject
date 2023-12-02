@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
 import { initializeApp } from "firebase/app"
 import { getAuth , createUserWithEmailAndPassword } from "firebase/auth"
-import { getDatabase, set, ref } from "firebase/database";
+import { getDatabase, set, ref} from "firebase/database";
 
 
 
@@ -31,7 +31,13 @@ export const FirebaseProvider = (props) => {
         return createUserWithEmailAndPassword(firebaseAuth, email, password)
     }
     
+    // put the data in real time database
     const putData = (key, data) => set(ref(database, key), data);
+
+    // to retrieve the data from the realtime database
+    // get(child(ref(database) , "department")).then((snapshot) => console.log(snapshot.toJSON()))
+    // get(child(ref(database) , "department/software engineering")).then((snapshot) => console.log(snapshot.val()))
+  
 
     return (
         <FirebaseContext.Provider value={{signupUserWithEmailAndPassword , putData}}>
